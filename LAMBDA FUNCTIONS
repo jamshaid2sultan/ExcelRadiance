@@ -1,25 +1,17 @@
 MONTHWISE =
-LAMBDA(
-    YEAR,
-    MONTH,
+LAMBDA(YEAR, MONTH,
+    LET(month,MONTH,year,YEAR,
+        TEXT(DATE(year,month,SEQUENCE(DAY(EOMONTH(DATE(year,month,1),0)),1,1,1)),"DD-MM-YYYY")))
+
+ColumnSummary =
+LAMBDA(DataColumn, ColumnName,
     LET(
-        month,MONTH,
-        year,YEAR,
-        TEXT(
-            DATE(
-                year,month,
-                SEQUENCE(
-                    DAY(
-                        EOMONTH(
-                            DATE(
-                                year,month,1
-                        ),0
-                    )
-                    ),1,1,1
-                )
-            ),"DD-MM-YYYY"
-        )
+        Members, UNIQUE(DataColumn),
+        MemberCount, COUNTIF(DataColumn, Members),
+        ReportBody, CHOOSE({1,2}, Members, MemberCount),
+        ReportHeader, CHOOSE({1,2}, ColumnName, "Count of " & ColumnName),
+        ReportFooter, CHOOSE({1,2}, "Total", SUM(MemberCount)),
+        VSTACK(ReportHeader, ReportBody, ReportFooter)
     )
 )
-
 
