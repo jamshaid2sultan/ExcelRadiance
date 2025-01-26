@@ -1,9 +1,9 @@
-MONTHWISE =
+GenerateMonthCalendar =
 LAMBDA(YEAR, MONTH,
     LET(month,MONTH,year,YEAR,
         TEXT(DATE(year,month,SEQUENCE(DAY(EOMONTH(DATE(year,month,1),0)),1,1,1)),"DD-MM-YYYY")))
 
-ColumnSummary =
+ColumnSummaryReport =
 LAMBDA(DataColumn, ColumnName,
     LET(
         Members, UNIQUE(DataColumn),
