@@ -15,3 +15,19 @@ LAMBDA(DataColumn, ColumnName,
     )
 )
 
+NextReviewYear = 
+LAMBDA(RegisteredDate, RiskRating,
+  LET(
+    obyear, YEAR(RegisteredDate),
+    crYear, YEAR(TODAY())-1,
+    tenure, crYear - obyear,
+    Policy, IFS(
+      RiskRating = "HIGH", 1,
+      OR(RiskRating = "MEDIUM HIGH", RiskRating = "MEDIUM"), 3,
+      OR(RiskRating = "LOW", RiskRating = "NULL"), 5
+    ),
+    qnt, QUOTIENT(tenure, Policy),
+    ReviewYear, (qnt * Policy) + obyear + Policy,
+    ReviewYear
+  )
+)
